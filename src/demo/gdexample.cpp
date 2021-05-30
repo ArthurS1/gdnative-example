@@ -16,6 +16,7 @@ GDExample::~GDExample() {
 void GDExample::_init() {
     // initialize any variables here
     float time_passed = 0.0;
+    Godot::print("It's working somehow");
 }
 
 void GDExample::_process(float delta) {

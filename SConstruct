@@ -11,8 +11,12 @@ opts.Add(EnumVariable('target', "Compilation target", 'debug', ['d', 'debug', 'r
 opts.Add(EnumVariable('platform', "Compilation platform", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(EnumVariable('p', "Compilation target, alias for 'platform'", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(BoolVariable('use_llvm', "Use the LLVM / Clang compiler", 'no'))
+
 opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'demo/bin/'))
 opts.Add(PathVariable('target_name', 'The library name.', 'libgdexample', PathVariable.PathAccept))
+
+opts.Add(PathVariable('player_path', 'The path where the lib is installed.', 'player/bin/'))
+opts.Add(PathVariable('player_name', 'The library name.', 'libplayer', PathVariable.PathAccept))
 
 # Local dependency paths, adapt them to your setup
 godot_headers_path = "godot-cpp/godot_headers/"
@@ -48,6 +52,7 @@ if env['platform'] == '':
 # Check our platform specifics
 if env['platform'] == "osx":
     env['target_path'] += 'osx/'
+    env['player_path'] += 'osx/'
     cpp_library += '.osx'
     env.Append(CCFLAGS=['-arch', 'x86_64'])
     env.Append(CXXFLAGS=['-std=c++17'])
@@ -59,6 +64,7 @@ if env['platform'] == "osx":
 
 elif env['platform'] in ('x11', 'linux'):
     env['target_path'] += 'x11/'
+    env['player_path'] += 'x11/'
     cpp_library += '.linux'
     env.Append(CCFLAGS=['-fPIC'])
     env.Append(CXXFLAGS=['-std=c++17'])
@@ -69,6 +75,7 @@ elif env['platform'] in ('x11', 'linux'):
 
 elif env['platform'] == "windows":
     env['target_path'] += 'win64/'
+    env['player_path'] += 'win64/'
     cpp_library += '.windows'
     # This makes sure to keep the session environment variables on windows,
     # that way you can run scons in a vs 2017 prompt and it will find all the required tools
@@ -98,11 +105,15 @@ env.Append(LIBS=[cpp_library])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=['src/'])
-sources = Glob('src/*.cpp')
+sources = Glob('src/demo/*.cpp')
+player_sources = Glob('src/player/*.cpp')
 
 library = env.SharedLibrary(target=env['target_path'] + env['target_name'] , source=sources)
 
+player_library = env.SharedLibrary(target=env['player_path'] + env['player_name'] , source=player_sources)
+
 Default(library)
+Default(player_library)
 
 print(env)
 

@@ -3,11 +3,11 @@
 singleton=false
 load_once=true
 symbol_prefix="godot_"
-reloadable=false
+reloadable=true
 
 [entry]
 
-X11.64="res://demo/bin/x11/libgdexample.so"
+X11.64="res://player/bin/x11/libplayer.so"
 
 [dependencies]
 

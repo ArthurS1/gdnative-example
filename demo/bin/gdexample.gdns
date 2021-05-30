@@ -1,8 +1,10 @@
 [gd_resource type="NativeScript" load_steps=2 format=2]
 
-[ext_resource path="res://demo/bin/gdexample.gdnlib" type="GDNativeLibrary" id=1]
+[sub_resource type="GDNativeLibrary" id=1]
+reloadable = false
+entry/X11.64 = "res://demo/bin/x11/libgdexample.so"
+dependency/X11.64 = [  ]
 
 [resource]
-resource_name = "GDExample"
 class_name = "GDExample"
-library = ExtResource( 1 )
+library = SubResource( 1 )
